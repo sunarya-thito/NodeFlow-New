@@ -28,6 +28,7 @@ class _MenuBarOverlayState extends State<MenuBarOverlay> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.controller.shownPopup.isEmpty) return const SizedBox();
     Offset globalToLocal(Offset global) {
       final rObj = context.findRenderObject();
       if (rObj == null) {
@@ -39,11 +40,12 @@ class _MenuBarOverlayState extends State<MenuBarOverlay> {
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: widget.controller.shownPopup.isEmpty
-          ? null
-          : () {
-              widget.controller.closeAll();
-            },
+      // onPointerDown: (e) {
+      //   widget.controller.closeAll();
+      // },
+      onTap: () {
+        widget.controller.closeAll();
+      },
       child: Stack(
         children: widget.controller.shownPopup.map((e) {
           var offset = globalToLocal(e.globalOffset);

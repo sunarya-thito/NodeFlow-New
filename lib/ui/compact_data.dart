@@ -22,12 +22,15 @@ class CompactData extends InheritedWidget {
     return context.dependOnInheritedWidgetOfExactType<CompactData>()!;
   }
 
+  Color get buttonHovered => rgbo(255, 255, 255, 0.1);
+  Color get buttonDown => rgbo(255, 255, 255, 0.25);
   Color get cursorColor => rgb(255, 255, 255);
   Color get dividerColor => rgb(50, 50, 50);
   Color get searchBarColor => rgb(50, 50, 50);
   Color get hoveredSurfaceColor => rgb(50, 50, 50);
   Color get focusedSurfaceColor => rgb(46, 125, 169);
   Color get surfaceColor => rgb(30, 30, 30);
+  Color get tooltipColor => rgb(40, 40, 40);
   Color get backgroundColor => rgb(20, 20, 20);
   Color get cardColor => rgb(50, 50, 50);
   Color get labelColor => rgb(120, 120, 120);
@@ -40,6 +43,14 @@ class CompactData extends InheritedWidget {
   @override
   bool updateShouldNotify(covariant CompactData oldWidget) {
     return false;
+  }
+
+  static Color rgbo(int r, int g, int b, double opacity) {
+    return Color.fromARGB((opacity * 255).toInt(), r, g, b);
+  }
+
+  static Color orgb(double opacity, int r, int g, int b) {
+    return Color.fromARGB((opacity * 255).toInt(), r, g, b);
   }
 
   static Color rgb(int r, int g, int b) {

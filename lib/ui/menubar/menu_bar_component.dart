@@ -11,7 +11,8 @@ class MenuBarComponent extends StatefulWidget {
   static double menuBarHeight = 24;
   final List<Menu> menuBar;
   final Widget? title;
-  const MenuBarComponent({Key? key, required this.menuBar, this.title}) : super(key: key);
+  const MenuBarComponent({Key? key, required this.menuBar, this.title})
+      : super(key: key);
 
   @override
   _MenuBarComponentState createState() => _MenuBarComponentState();
@@ -26,7 +27,8 @@ class _MenuBarComponentState extends State<MenuBarComponent> {
   @override
   void initState() {
     super.initState();
-    _mnemonicGroup.properties.addAll(widget.menuBar.map((e) => MnemonicProperty(e, -1)));
+    _mnemonicGroup.properties
+        .addAll(widget.menuBar.map((e) => MnemonicProperty(e, -1)));
     _mnemonicGroup.recalculateMnemonic();
   }
 
@@ -34,7 +36,8 @@ class _MenuBarComponentState extends State<MenuBarComponent> {
   void didUpdateWidget(covariant MenuBarComponent oldWidget) {
     super.didUpdateWidget(oldWidget);
     _mnemonicGroup.properties.clear();
-    _mnemonicGroup.properties.addAll(widget.menuBar.map((e) => MnemonicProperty(e, -1)));
+    _mnemonicGroup.properties
+        .addAll(widget.menuBar.map((e) => MnemonicProperty(e, -1)));
     _mnemonicGroup.recalculateMnemonic();
   }
 
@@ -65,6 +68,7 @@ class _MenuBarComponentState extends State<MenuBarComponent> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: widget.menuBar
+                  .where((element) => !element.hidden)
                   .map((e) => MenuBarItemComponent(
                         menu: e,
                         controller: controller,
@@ -78,7 +82,11 @@ class _MenuBarComponentState extends State<MenuBarComponent> {
                             if (_opened != null && _opened != e) {
                               controller.removePopup(_opened!);
                               _opened = e;
-                              controller.pushPopup(MenuPopup(menu: e, globalOffset: offset));
+                              controller.pushPopup(MenuPopupWidget(
+                                menu: e,
+                                globalOffset: offset,
+                                controller: MenuBarData.of(context).controller,
+                              ));
                             }
                           });
                         },
@@ -93,7 +101,11 @@ class _MenuBarComponentState extends State<MenuBarComponent> {
                               }
                             }
                             _opened = e;
-                            controller.pushPopup(MenuPopup(menu: e, globalOffset: offset));
+                            controller.pushPopup(MenuPopupWidget(
+                              menu: e,
+                              globalOffset: offset,
+                              controller: MenuBarData.of(context).controller,
+                            ));
                           });
                         },
                       ))

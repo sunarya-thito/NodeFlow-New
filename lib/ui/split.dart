@@ -14,7 +14,13 @@ class Split extends StatefulWidget {
   final Axis direction;
   final Widget a, b;
   final SplitMode mode;
-  const Split({Key? key, this.initialPosition = 0.5, this.direction = Axis.horizontal, required this.a, required this.b, this.mode = SplitMode.relative})
+  const Split(
+      {Key? key,
+      this.initialPosition = 0.5,
+      this.direction = Axis.horizontal,
+      required this.a,
+      required this.b,
+      this.mode = SplitMode.relative})
       : super(key: key);
 
   @override
@@ -86,21 +92,28 @@ class _SplitState extends State<Split> {
         left: widget.mode == SplitMode.relative
             ? size.width * _split.clamp(0, 1) - draggerSize / 2
             : (_split - draggerSize / 2).clamp(0, size.width - draggerSize),
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onHorizontalDragUpdate: (details) {
-            setState(() {
-              if (widget.mode == SplitMode.relative) {
-                _split = _calculateNewSplit(size.width, _split + details.delta.dx / size.width);
-              } else {
-                _split = _calculateNewSplit(size.width, _split + details.delta.dx);
-              }
-            });
-          },
-          child: MouseRegion(
-            cursor: SystemMouseCursors.resizeLeftRight,
-            child: Container(
-              width: draggerSize,
+        child: MouseRegion(
+          cursor: widget.direction == Axis.horizontal
+              ? SystemMouseCursors.resizeLeftRight
+              : SystemMouseCursors.resizeUpDown,
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onHorizontalDragUpdate: (details) {
+              setState(() {
+                if (widget.mode == SplitMode.relative) {
+                  _split = _calculateNewSplit(
+                      size.width, _split + details.delta.dx / size.width);
+                } else {
+                  _split =
+                      _calculateNewSplit(size.width, _split + details.delta.dx);
+                }
+              });
+            },
+            child: MouseRegion(
+              cursor: SystemMouseCursors.resizeLeftRight,
+              child: Container(
+                width: draggerSize,
+              ),
             ),
           ),
         ),
@@ -117,9 +130,11 @@ class _SplitState extends State<Split> {
           onVerticalDragUpdate: (details) {
             setState(() {
               if (widget.mode == SplitMode.relative) {
-                _split = _calculateNewSplit(size.height, _split + details.delta.dy / size.height);
+                _split = _calculateNewSplit(
+                    size.height, _split + details.delta.dy / size.height);
               } else {
-                _split = _calculateNewSplit(size.height, _split + details.delta.dy);
+                _split =
+                    _calculateNewSplit(size.height, _split + details.delta.dy);
               }
             });
           },
@@ -147,8 +162,12 @@ class _SplitState extends State<Split> {
             child: widget.direction == Axis.horizontal
                 ? Row(children: [
                     SizedBox(
-                      width:
-                          max(0, (widget.mode == SplitMode.relative ? constraints.maxWidth * _split.clamp(0, 1) : _split.clamp(0, constraints.maxWidth)) - 1),
+                      width: max(
+                          0,
+                          (widget.mode == SplitMode.relative
+                                  ? constraints.maxWidth * _split.clamp(0, 1)
+                                  : _split.clamp(0, constraints.maxWidth)) -
+                              1),
                       child: widget.a,
                     ),
                     const DividerVertical(),
@@ -158,7 +177,11 @@ class _SplitState extends State<Split> {
                     children: [
                       SizedBox(
                         height: max(
-                            0, (widget.mode == SplitMode.relative ? constraints.maxHeight * _split.clamp(0, 1) : _split.clamp(0, constraints.maxHeight)) - 1),
+                            0,
+                            (widget.mode == SplitMode.relative
+                                    ? constraints.maxHeight * _split.clamp(0, 1)
+                                    : _split.clamp(0, constraints.maxHeight)) -
+                                1),
                         child: widget.a,
                       ),
                       const DividerHorizontal(),

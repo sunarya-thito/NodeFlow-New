@@ -7,9 +7,9 @@ import 'package:nodeflow/ui/menubar/menu_bar.dart';
 
 Map<String, I18n> _messages = {};
 
-Future<void> reloadMessages() async {
+Future<void> reloadMessages(String assetName) async {
   _messages.clear();
-  String string = await assets.loadTextAsset('en_us.json');
+  String string = await assets.loadTextAsset(assetName);
   // parse string to json
   // the json map could contain another json map
   // it needs to be flattened
@@ -64,12 +64,16 @@ class I18n extends ChangeNotifier {
     return result;
   }
 
+  static final I18n empty = I18n('');
   static I18n get dashboard_project => get('dashboard.project');
-  static I18n get dashboard_project_overview => get('dashboard.project.overview');
-  static I18n get dashboard_project_projects => get('dashboard.project.projects');
+  static I18n get dashboard_project_overview =>
+      get('dashboard.project.overview');
+  static I18n get dashboard_project_projects =>
+      get('dashboard.project.projects');
   static I18n get dashboard_account => get('dashboard.account');
   static I18n get dashboard_account_billing => get('dashboard.account.billing');
-  static I18n get dashboard_account_settings => get('dashboard.account.settings');
+  static I18n get dashboard_account_settings =>
+      get('dashboard.account.settings');
   static I18n get dashboard_account_logout => get('dashboard.account.logout');
   static I18n get dashboard_search => get('dashboard.search');
   static I18n get menubar_file => get('menubar.file');
@@ -78,9 +82,17 @@ class I18n extends ChangeNotifier {
   static I18n get menubar_tools => get('menubar.tools');
   static I18n get menubar_help => get('menubar.help');
   static I18n get quickaccess_search => get('quickaccess.search');
+  static I18n get tooltip_quickaccess_search =>
+      get('tooltip.quickaccess.search');
   static I18n get quickaccess_run => get('quickaccess.run');
+  static I18n get tooltip_quickaccess_run => get('tooltip.quickaccess.run');
   static I18n get quickaccess_deploy => get('quickaccess.deploy');
-  static I18n get quickaccess_configuration_notselected => get('quickaccess.configuration.notselected');
+  static I18n get tooltip_quickaccess_deploy =>
+      get('tooltip.quickaccess.deploy');
+  static I18n get quickaccess_build_configuration =>
+      get('quickaccess.build_configuration');
+  static I18n get tooltip_quickaccess_build_configuration =>
+      get('tooltip.quickaccess.build_configuration');
   static I18n get project_default_name => get('project.default.name');
   static I18n get sidebar_projectfiles => get('sidebar.projectfiles');
   static I18n get bottombar_console => get('bottombar.console');
@@ -101,7 +113,8 @@ class I18n extends ChangeNotifier {
     return I18nTextWidget(i18n: this);
   }
 
-  Widget asBuilderWidget(Widget Function(BuildContext context, I18n i18n) builder) {
+  Widget asBuilderWidget(
+      Widget Function(BuildContext context, I18n i18n) builder) {
     return I18nBuilderWidget(i18n: this, builder: builder);
   }
 
@@ -172,7 +185,8 @@ class I18nMnemonicWidget extends StatefulWidget {
   final I18n i18n;
   final int index;
 
-  const I18nMnemonicWidget({Key? key, required this.i18n, required this.index}) : super(key: key);
+  const I18nMnemonicWidget({Key? key, required this.i18n, required this.index})
+      : super(key: key);
 
   @override
   I18nMnemonicWidgetState createState() => I18nMnemonicWidgetState();
@@ -187,14 +201,18 @@ class I18nMnemonicWidgetState extends State<I18nMnemonicWidget> {
     List<TextSpan> children = [];
     if (index == 0) {
       // underlined mnemonic
-      children.add(TextSpan(text: msg[0], style: const TextStyle(decoration: TextDecoration.underline)));
+      children.add(TextSpan(
+          text: msg[0],
+          style: const TextStyle(decoration: TextDecoration.underline)));
       // rest of the text
       children.add(TextSpan(text: msg.substring(1)));
     } else {
 // first part of the text
       children.add(TextSpan(text: msg.substring(0, index)));
       // underlined mnemonic
-      children.add(TextSpan(text: msg[index], style: const TextStyle(decoration: TextDecoration.underline)));
+      children.add(TextSpan(
+          text: msg[index],
+          style: const TextStyle(decoration: TextDecoration.underline)));
       // rest of the text
       children.add(TextSpan(text: msg.substring(index + 1)));
     }
@@ -208,7 +226,8 @@ class I18nBuilderWidget extends StatelessWidget {
   final I18n i18n;
   final Widget Function(BuildContext context, I18n i18n) builder;
 
-  const I18nBuilderWidget({Key? key, required this.builder, required this.i18n}) : super(key: key);
+  const I18nBuilderWidget({Key? key, required this.builder, required this.i18n})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

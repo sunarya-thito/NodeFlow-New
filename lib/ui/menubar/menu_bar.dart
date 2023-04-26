@@ -1,24 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:nodeflow/hotkey.dart';
 import 'package:nodeflow/i18n/internationalization.dart';
 
 class Menu {
+  final Key key;
   final Widget? icon;
   final I18n label;
   final List<Menu> items;
-  Menu({required this.label, this.items = const [], this.icon});
-
-  bool get isDisabled => items.isEmpty;
-  bool get closeOnClick => items.isEmpty;
-}
-
-class MenuButton extends Menu {
+  final bool hidden;
   final void Function()? onTap;
+  final ShortcutKey? keybind;
+  Menu(
+      {Key? key,
+      required this.label,
+      this.items = const [],
+      this.icon,
+      this.onTap,
+      this.keybind,
+      this.hidden = false})
+      : key = key ?? UniqueKey();
 
-  MenuButton({required super.label, this.onTap, super.icon, super.items = const []});
+  Menu hide() {
+    return Menu(
+      key: key,
+      label: label,
+      items: items,
+      icon: icon,
+      onTap: onTap,
+      keybind: keybind,
+      hidden: true,
+    );
+  }
 
-  @override
-  bool get closeOnClick => super.closeOnClick && onTap != null;
+  Menu show() {
+    return Menu(
+      key: key,
+      label: label,
+      items: items,
+      icon: icon,
+      onTap: onTap,
+      keybind: keybind,
+      hidden: false,
+    );
+  }
 
-  @override
-  bool get isDisabled => onTap == null && super.isDisabled;
+  List<Menu> get filteredItems =>
+      items.where((element) => !element.hidden).toList();
+
+  bool get hasNoChildren => items.where((element) => !element.hidden).isEmpty;
+  bool get isDisabled => hasNoChildren && onTap == null;
+  bool get closeOnClick => hasNoChildren || onTap != null;
 }
