@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A Codeless Editor">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="nodeflow">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>NodeFlow</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = null;
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="preloader" id="preloader">
+    <div class="preloader-content">
+      <div class="lds-ripple"><div></div><div></div></div>
+      <div class="preloader-text">Loading Application</div>
+    </div>
+  </div>
+  <script>
+    let element = document.querySelector('#preloader');
+    element.addEventListener('animationend', () => {
+      element.remove();
+    });
+    window.addEventListener('load', function(ev) {
+      let motd = [
+        "Great software takes time to load. Thanks for your patience!",
+        "Building software from scratch can be a daunting task. We're here to make it easy for you!",
+        "Just a moment while we set up your software. It'll be worth the wait!",
+        "Loading software is like baking a cake - it takes time to get it just right.",
+        "Did you know? Our software is being built just for you, so sit back and relax!",
+        "While we prepare your software, take a deep breath and let your mind wander.",
+        "Programming without coding? That's right! We're almost ready to show you how.",
+        "Our app preloader is working hard to get your software up and running. Thanks for waiting!",
+        "Just a few more seconds and you'll be on your way to building your dream software."
+      ];
+      // copy of motd, with randomized order
+      let motdCopy = motd.slice(0);
+      // randomize motdCopy
+      for (let i = motdCopy.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [motdCopy[i], motdCopy[j]] = [motdCopy[j], motdCopy[i]];
+      }
+      let motdIndex = 0;
+      let task = setInterval(() => {
+        let text = document.querySelector('.preloader-text');
+        if (text) {
+          text.innerHTML = motdCopy[motdIndex];
+          motdIndex++;
+          if (motdIndex >= motdCopy.length) {
+            motdIndex = 0;
+          }
+        } else {
+          clearInterval(task);
+        }
+      }, 1000 * 5);
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
