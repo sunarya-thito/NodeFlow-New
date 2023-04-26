@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nodeflow/i18n/internationalization.dart';
 
 class NavigationLabel extends StatelessWidget {
-  final I18n label;
+  final Intl label;
   const NavigationLabel({Key? key, required this.label}) : super(key: key);
 
   @override

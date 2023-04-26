@@ -53,8 +53,7 @@ class SearchEngine extends Context {
     for (SearchService service in _services) {
       results.addAll(service.search(query));
     }
-    results
-        .sort((a, b) => b.score.compareTo(a.score)); // sort from highest score
+    results.sort((a, b) => b.score.compareTo(a.score)); // sort from highest score
     return results;
   }
 }
@@ -66,8 +65,8 @@ abstract class SearchService {
 class SearchResult {
   final int score; // score determined by relevance
   final Widget icon;
-  final I18n title;
-  final I18n description;
+  final Intl title;
+  final Intl description;
   final void Function() onTap;
 
   const SearchResult({

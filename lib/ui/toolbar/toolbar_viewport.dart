@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nodeflow/i18n/internationalization.dart';
+import 'package:nodeflow/i18n/internationalization_keys.dart';
 import 'package:nodeflow/ui/compact_data.dart';
 import 'package:nodeflow/ui/divider_horizontal.dart';
 import 'package:nodeflow/ui/divider_vertical.dart';
@@ -12,8 +12,7 @@ import 'package:nodeflow/ui/ui_util.dart';
 
 class ToolbarData extends InheritedWidget {
   final ToolbarController controller;
-  const ToolbarData({Key? key, required this.controller, required Widget child})
-      : super(key: key, child: child);
+  const ToolbarData({Key? key, required this.controller, required Widget child}) : super(key: key, child: child);
 
   static ToolbarData of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<ToolbarData>()!;
@@ -29,12 +28,7 @@ class ToolbarViewport extends StatefulWidget {
   final OverlayController overlayController;
   final List<Toolbar> toolbars;
   final Widget child;
-  const ToolbarViewport(
-      {Key? key,
-      required this.toolbars,
-      required this.child,
-      required this.overlayController})
-      : super(key: key);
+  const ToolbarViewport({Key? key, required this.toolbars, required this.child, required this.overlayController}) : super(key: key);
 
   @override
   ToolbarViewportState createState() => ToolbarViewportState();
@@ -80,28 +74,20 @@ class ToolbarViewportState extends State<ToolbarViewport> {
               color: app().surfaceColor,
               child: Padding(
                 padding: const EdgeInsets.all(4),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ...joinWidgets(
-                        widget.toolbars
-                            .where((element) => element.hasItems)
-                            .map((e) => ToolbarItemsViewport(
-                                items: e.items
-                                    .where((element) => !element.hidden)
-                                    .toList()))
-                            .toList(),
-                        () => const DividerVertical(),
-                      ),
-                      const SizedBox(width: 8),
-                      TooltipWrapper(
-                        tooltip: TooltipWrapper.descriptiveTooltip(
-                            I18n.quickaccess_search,
-                            I18n.tooltip_quickaccess_search),
-                        child: const SearchBar(),
-                      ),
-                    ]),
+                child: Row(mainAxisAlignment: MainAxisAlignment.end, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  ...joinWidgets(
+                    widget.toolbars
+                        .where((element) => element.hasItems)
+                        .map((e) => ToolbarItemsViewport(items: e.items.where((element) => !element.hidden).toList()))
+                        .toList(),
+                    () => const DividerVertical(),
+                  ),
+                  const SizedBox(width: 8),
+                  TooltipWrapper(
+                    tooltip: TooltipWrapper.descriptiveTooltip(I18n.quickaccess_search, I18n.tooltip_quickaccess_search),
+                    child: const SearchBar(),
+                  ),
+                ]),
               ),
             ),
             const DividerHorizontal(),
@@ -123,11 +109,6 @@ class _ToolbarItemsViewportState extends State<ToolbarItemsViewport> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Row(
-            children: widget.items
-                .map((e) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 2),
-                    child: e.build(context)))
-                .toList()));
+        child: Row(children: widget.items.map((e) => Padding(padding: const EdgeInsets.symmetric(horizontal: 2), child: e.build(context))).toList()));
   }
 }

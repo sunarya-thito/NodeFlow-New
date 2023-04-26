@@ -1,0 +1,7 @@
+builders:
+  internationalizationBuilder:
+    import: "package:nodeflow/builder.dart"
+    builder_factories: ["internationalizationBuilder"]
+    build_extensions: {"assets/en_us.json": ["lib/i18n/internationalization_keys.dart"]}
+    auto_apply: root_package
+    build_to: source

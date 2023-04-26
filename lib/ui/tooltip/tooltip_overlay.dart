@@ -49,18 +49,24 @@ class _TooltipOverlayState extends State<TooltipOverlay> {
     }
 
     var localPosition = globalToLocal(adjustedPosition);
-    return Stack(children: [
-      Positioned(
-        left: localPosition.dx,
-        top: localPosition.dy,
-        child: Container(
-          decoration: BoxDecoration(
-            color: app().tooltipColor,
-            border: Border.all(color: app().dividerColor),
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: (_) {
+        widget.controller.clear();
+      },
+      child: Stack(children: [
+        Positioned(
+          left: localPosition.dx,
+          top: localPosition.dy,
+          child: Container(
+            decoration: BoxDecoration(
+              color: app().tooltipColor,
+              border: Border.all(color: app().dividerColor),
+            ),
+            child: widget.controller.buildTooltip(context),
           ),
-          child: widget.controller.buildTooltip(context),
-        ),
-      )
-    ]);
+        )
+      ]),
+    );
   }
 }

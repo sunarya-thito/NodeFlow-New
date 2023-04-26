@@ -9,12 +9,7 @@ class MenuPopupWidget extends StatefulWidget {
   final MenuBarController controller;
   final Menu menu;
   final Offset globalOffset;
-  const MenuPopupWidget(
-      {Key? key,
-      required this.menu,
-      required this.globalOffset,
-      required this.controller})
-      : super(key: key);
+  const MenuPopupWidget({Key? key, required this.menu, required this.globalOffset, required this.controller}) : super(key: key);
 
   @override
   _MenuPopupWidgetState createState() => _MenuPopupWidgetState();
@@ -26,8 +21,7 @@ class _MenuPopupWidgetState extends State<MenuPopupWidget> {
   @override
   void initState() {
     super.initState();
-    _mnemonicGroup.properties
-        .addAll(widget.menu.items.map((e) => MnemonicProperty(e, -1)));
+    _mnemonicGroup.properties.addAll(widget.menu.items.map((e) => MnemonicProperty(e, -1)));
     _mnemonicGroup.recalculateMnemonic();
 
     widget.controller.addListener(update);
@@ -41,8 +35,7 @@ class _MenuPopupWidgetState extends State<MenuPopupWidget> {
   void didUpdateWidget(covariant MenuPopupWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     _mnemonicGroup.properties.clear();
-    _mnemonicGroup.properties
-        .addAll(widget.menu.items.map((e) => MnemonicProperty(e, -1)));
+    _mnemonicGroup.properties.addAll(widget.menu.items.map((e) => MnemonicProperty(e, -1)));
     _mnemonicGroup.recalculateMnemonic();
 
     if (widget.controller != oldWidget.controller) {
@@ -80,8 +73,7 @@ class _MenuPopupWidgetState extends State<MenuPopupWidget> {
                   (e) => MenuItemComponent(
                     menu: e,
                     hovered: controller.hovered == e,
-                    focused:
-                        controller.hovered == e || controller.isMenuShown(e),
+                    focused: controller.hovered == e || controller.isMenuShown(e),
                     mnemonicGroup: _mnemonicGroup,
                     keybind: e.keybind,
                     onHover: (hover, offset) {

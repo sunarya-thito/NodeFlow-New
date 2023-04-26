@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nodeflow/i18n/internationalization.dart';
+import 'package:nodeflow/i18n/internationalization_keys.dart';
 import 'package:nodeflow/ui/divider_horizontal.dart';
 import 'package:nodeflow/ui/divider_vertical.dart';
 import 'package:nodeflow/ui/input/button_icon.dart';

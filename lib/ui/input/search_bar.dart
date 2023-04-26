@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nodeflow/i18n/internationalization.dart';
+import 'package:nodeflow/i18n/internationalization_keys.dart';
 import 'package:nodeflow/ui/compact_data.dart';
 
 class SearchBar extends StatefulWidget {
@@ -22,20 +22,15 @@ class _SearchBarState extends State<SearchBar> {
     var selection = controller.selection;
     if (hasSelection) {
       var currentSuggestion = suggestions[suggestionIndex % suggestions.length];
-      controller.text = controller.text.replaceRange(
-          selection.baseOffset, selection.extentOffset, currentSuggestion);
+      controller.text = controller.text.replaceRange(selection.baseOffset, selection.extentOffset, currentSuggestion);
       // set the cursor at original position
-      controller.selection = TextSelection(
-          baseOffset: selection.baseOffset,
-          extentOffset: selection.baseOffset + currentSuggestion.length);
-    } else if (selection.isCollapsed &&
-        selection.baseOffset == controller.text.length) {
+      controller.selection = TextSelection(baseOffset: selection.baseOffset, extentOffset: selection.baseOffset + currentSuggestion.length);
+    } else if (selection.isCollapsed && selection.baseOffset == controller.text.length) {
       // else if cursor at the end of the text
       var currentSuggestion = suggestions[suggestionIndex % suggestions.length];
       // if not ends with space, then add space first, also move the cursor forward
       controller.text += currentSuggestion;
-      controller.selection = TextSelection(
-          baseOffset: selection.baseOffset, extentOffset: selection.baseOffset);
+      controller.selection = TextSelection(baseOffset: selection.baseOffset, extentOffset: selection.baseOffset);
     }
   }
 
@@ -47,8 +42,7 @@ class _SearchBarState extends State<SearchBar> {
       var selection = controller.selection;
       if (hasSelection) {
         // replace selected with empty
-        controller.text = controller.text
-            .replaceRange(selection.baseOffset, selection.extentOffset, '');
+        controller.text = controller.text.replaceRange(selection.baseOffset, selection.extentOffset, '');
       }
       return;
     }
@@ -67,15 +61,11 @@ class _SearchBarState extends State<SearchBar> {
       var textBefore = text.substring(0, start);
       var textAfter = text.substring(end);
       controller.text = textBefore + suggestion + textAfter;
-      controller.selection = TextSelection(
-          baseOffset: start, extentOffset: start + suggestion.length);
-    } else if (cursorPosition == text.length &&
-        controller.selection.isCollapsed) {
+      controller.selection = TextSelection(baseOffset: start, extentOffset: start + suggestion.length);
+    } else if (cursorPosition == text.length && controller.selection.isCollapsed) {
       var textBefore = text.substring(0, cursorPosition);
       controller.text = textBefore + suggestion;
-      controller.selection = TextSelection(
-          baseOffset: cursorPosition,
-          extentOffset: cursorPosition + suggestion.length);
+      controller.selection = TextSelection(baseOffset: cursorPosition, extentOffset: cursorPosition + suggestion.length);
     }
   }
 
@@ -83,8 +73,7 @@ class _SearchBarState extends State<SearchBar> {
 
   bool get hasSelection {
     var selection = controller.selection;
-    return selection.baseOffset < selection.extentOffset &&
-        selection.extentOffset == controller.text.length;
+    return selection.baseOffset < selection.extentOffset && selection.extentOffset == controller.text.length;
   }
 
   @override
@@ -133,30 +122,22 @@ class _SearchBarState extends State<SearchBar> {
               if (event.logicalKey == LogicalKeyboardKey.backspace) {
                 var selection = controller.selection;
                 if (hasSelection) {
-                  controller.text = controller.text.replaceRange(
-                      selection.baseOffset, selection.extentOffset, '');
+                  controller.text = controller.text.replaceRange(selection.baseOffset, selection.extentOffset, '');
                   // set selection at the end
-                  controller.selection =
-                      TextSelection.collapsed(offset: controller.text.length);
+                  controller.selection = TextSelection.collapsed(offset: controller.text.length);
                 }
               } else if (event.logicalKey == LogicalKeyboardKey.enter) {
                 if (hasSelection) {
-                  controller.selection =
-                      TextSelection.collapsed(offset: controller.text.length);
+                  controller.selection = TextSelection.collapsed(offset: controller.text.length);
                 }
               } else if (event.logicalKey == LogicalKeyboardKey.escape) {
                 if (hasSelection) {
                   // remove suggestion
-                  controller.text = controller.text.replaceRange(
-                      controller.selection.baseOffset,
-                      controller.selection.extentOffset,
-                      '');
+                  controller.text = controller.text.replaceRange(controller.selection.baseOffset, controller.selection.extentOffset, '');
                   // set selection at the end
-                  controller.selection =
-                      TextSelection.collapsed(offset: controller.text.length);
+                  controller.selection = TextSelection.collapsed(offset: controller.text.length);
                 }
-              } else if (event.logicalKey == LogicalKeyboardKey.tab ||
-                  event.logicalKey == LogicalKeyboardKey.arrowUp) {
+              } else if (event.logicalKey == LogicalKeyboardKey.tab || event.logicalKey == LogicalKeyboardKey.arrowUp) {
                 // stop the propagation of the event
                 suggestionIndex++;
                 updateIndexSuggestion();
@@ -189,9 +170,7 @@ class _SearchBarState extends State<SearchBar> {
                   color: CompactData.of(context).secondaryTextColor,
                 ),
               ),
-              style: TextStyle(
-                  color: CompactData.of(context).primaryTextColor,
-                  fontSize: 14),
+              style: TextStyle(color: CompactData.of(context).primaryTextColor, fontSize: 14),
               cursorColor: CompactData.of(context).cursorColor,
               cursorWidth: 1.2,
             ),

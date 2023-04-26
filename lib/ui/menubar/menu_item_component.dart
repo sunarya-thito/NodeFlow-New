@@ -34,12 +34,7 @@ class _MenuItemComponentState extends State<MenuItemComponent> {
   Widget buildIconOrEmpty() {
     if (widget.menu.icon != null) {
       return IconTheme(
-          data: IconThemeData(
-              size: iconSize,
-              color: widget.menu.isDisabled
-                  ? app().secondaryTextColor
-                  : app().primaryTextColor),
-          child: widget.menu.icon!);
+          data: IconThemeData(size: iconSize, color: widget.menu.isDisabled ? app().secondaryTextColor : app().primaryTextColor), child: widget.menu.icon!);
     } else {
       return const SizedBox(width: iconSize, height: iconSize);
     }
@@ -85,12 +80,8 @@ class _MenuItemComponentState extends State<MenuItemComponent> {
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
           child: DefaultTextStyle(
             style: TextStyle(
-              color: widget.menu.isDisabled
-                  ? app().secondaryTextColor
-                  : app().primaryTextColor,
-              decorationColor: widget.menu.isDisabled
-                  ? app().secondaryTextColor
-                  : app().primaryTextColor,
+              color: widget.menu.isDisabled ? app().secondaryTextColor : app().primaryTextColor,
+              decorationColor: widget.menu.isDisabled ? app().secondaryTextColor : app().primaryTextColor,
               decorationThickness: 1,
               fontSize: 12,
             ),
@@ -99,8 +90,7 @@ class _MenuItemComponentState extends State<MenuItemComponent> {
                 buildIconOrEmpty(),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: widget.menu.label.asMnemonicWidget(
-                      widget.mnemonicGroup.getMnemonicIndex(widget.menu)),
+                  child: widget.menu.label.asMnemonicWidget(widget.mnemonicGroup.getMnemonicIndex(widget.menu)),
                 ),
                 const SizedBox(width: 16),
                 if (widget.menu.closeOnClick && widget.keybind != null)
@@ -115,9 +105,7 @@ class _MenuItemComponentState extends State<MenuItemComponent> {
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 12,
-                    color: widget.menu.isDisabled
-                        ? app().secondaryTextColor
-                        : app().primaryTextColor,
+                    color: widget.menu.isDisabled ? app().secondaryTextColor : app().primaryTextColor,
                   )
               ],
             ),

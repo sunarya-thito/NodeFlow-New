@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nodeflow/i18n/internationalization.dart';
+
+import '../i18n/internationalization.dart';
 
 class DashboardCategory {
-  final I18n label;
+  final Intl label;
   final List<DashboardPage> pages;
 
   DashboardCategory({required this.label, required this.pages});
@@ -10,7 +11,7 @@ class DashboardCategory {
 
 class DashboardPage {
   final Icon icon;
-  final I18n label;
+  final Intl label;
   final Widget Function(BuildContext context)? pageBuilder;
   final void Function()? onTap;
 

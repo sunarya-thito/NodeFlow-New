@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:nodeflow/action.dart';
-import 'package:nodeflow/i18n/internationalization.dart';
+import 'package:nodeflow/i18n/internationalization_keys.dart';
 import 'package:nodeflow/ui/menubar/menu_bar.dart';
 
 class ActionTools extends Action<void> {
@@ -16,7 +16,7 @@ class ActionTools extends Action<void> {
 
 class ActionToolsHandler extends ActionHandler<void> {
   @override
-  Menu? createMenu() {
+  Menu? buildMenu() {
     return ActionHandler.newMenu(this, label: I18n.menubar_tools);
   }
 }

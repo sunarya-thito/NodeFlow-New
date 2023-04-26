@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nodeflow/action.dart';
 import 'package:nodeflow/application.dart';
-import 'package:nodeflow/i18n/internationalization.dart';
+import 'package:nodeflow/i18n/internationalization_keys.dart';
 import 'package:nodeflow/ui/menubar/menu_bar.dart';
 import 'package:nodeflow/ui/menubar/menu_bar_component.dart';
 import 'package:nodeflow/ui/menubar/menu_bar_viewport.dart';

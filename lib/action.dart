@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:nodeflow/application.dart';
 import 'package:nodeflow/hotkey.dart';
 import 'package:nodeflow/i18n/internationalization.dart';
+import 'package:nodeflow/i18n/internationalization_keys.dart';
 import 'package:nodeflow/ui/menubar/menu_bar.dart';
 import 'package:nodeflow/ui/toolbar/toolbar.dart';
 
 class ActionContext extends Context {
-  final Map<Key?, List<ActionHandler>> _actions =
-      {}; // Parent, Children (Actions)
+  final Map<Key?, List<ActionHandler>> _actions = {}; // Parent, Children (Actions)
 
   List<Menu>? _menus;
   List<Toolbar>? _toolbars;
@@ -54,9 +54,7 @@ class ActionContext extends Context {
     if (nodeflow.isInitialized) {
       // warn: action must be registered before the application is initialized
       // this would rebuild the entire menu bar and will cause a small lag
-      if (!kIgnoreWarnings)
-        print(
-            'warn: an action was registered after the application was initialized');
+      if (!kIgnoreWarnings) print('warn: an action was registered after the application was initialized');
       rebuildActions();
     }
   }
@@ -67,9 +65,7 @@ class ActionContext extends Context {
       entry.value.removeWhere((element) => element._action == action);
     }
     if (nodeflow.isInitialized) {
-      if (!kIgnoreWarnings)
-        print(
-            'warn: an action was unregistered after the application was initialized');
+      if (!kIgnoreWarnings) print('warn: an action was unregistered after the application was initialized');
       rebuildActions();
     }
   }
@@ -80,9 +76,7 @@ class ActionContext extends Context {
     }
     _actions[parent]!.removeWhere((element) => element._action == action);
     if (nodeflow.isInitialized) {
-      if (!kIgnoreWarnings)
-        print(
-            'warn: an action was unregistered after the application was initialized');
+      if (!kIgnoreWarnings) print('warn: an action was unregistered after the application was initialized');
       rebuildActions();
     }
   }
@@ -151,7 +145,7 @@ class ActionAccessor {
   }
 
   static Menu? createMenu(ActionHandler handler) {
-    var menu = handler.createMenu();
+    var menu = handler.buildMenu();
     if (menu != null && menu.key != handler._action.key) {
       throw Exception('Menu key must be the same as the action key');
     }
@@ -159,7 +153,7 @@ class ActionAccessor {
   }
 
   static ToolbarItem? createToolbar(ActionHandler handler) {
-    var toolbar = handler.createToolbar();
+    var toolbar = handler.buildToolbar();
     if (toolbar != null && toolbar.key != handler._action.key) {
       throw Exception('Toolbar key must be the same as the action key');
     }
@@ -168,7 +162,7 @@ class ActionAccessor {
 
   static bool replaceToolbar(ActionHandler handler, List<Toolbar> allToolbars) {
     bool found = false;
-    var toolbar = handler.createToolbar();
+    var toolbar = handler.buildToolbar();
     for (var i = 0; i < allToolbars.length; i++) {
       var tb = allToolbars[i];
       for (var j = 0; j < tb.items.length; j++) {
@@ -187,12 +181,11 @@ class ActionAccessor {
 
   // if returns false, the action is not registered
   static bool replaceMenu(ActionHandler handler, List<Menu> allMenus) {
-    var menu = handler.createMenu();
+    var menu = handler.buildMenu();
     return _replaceMenu(handler, menu, allMenus);
   }
 
-  static bool _replaceMenu(
-      ActionHandler handler, Menu? menu, List<Menu> allMenus) {
+  static bool _replaceMenu(ActionHandler handler, Menu? menu, List<Menu> allMenus) {
     bool found = false;
     for (var i = 0; i < allMenus.length; i++) {
       if (allMenus[i].key == handler.action.key) {
@@ -254,18 +247,12 @@ abstract class ActionHandler<T> {
     ActionValue<bool>(value: false, label: null),
   ]; // values for checkbox
 
-  static ToolbarItem newToolbarButton(ActionHandler actionHandler,
-      {required I18n label,
-      required Widget icon,
-      bool enabled = true,
-      I18n? description}) {
+  static ToolbarItem newToolbarButton(ActionHandler actionHandler, {required Intl label, required Widget icon, bool enabled = true, Intl? description}) {
     return ToolbarButton(
         icon: icon,
         label: label,
         description: description,
-        keybind: actionHandler.action is KeybindAction
-            ? (actionHandler.action as KeybindAction).shortcutKey
-            : null,
+        keybind: actionHandler.action is KeybindAction ? (actionHandler.action as KeybindAction).shortcutKey : null,
         onPressed: enabled
             ? () {
                 actionHandler._execute(null);
@@ -275,19 +262,13 @@ abstract class ActionHandler<T> {
   }
 
   static ToolbarItem newToolbarToggleButton(ActionHandler actionHandler,
-      {required I18n label,
-      required Widget icon,
-      bool enabled = true,
-      bool selected = false,
-      I18n? description}) {
+      {required Intl label, required Widget icon, bool enabled = true, bool selected = false, Intl? description}) {
     return ToolbarToggleButton(
         icon: icon,
         label: label,
         selected: selected,
         description: description,
-        keybind: actionHandler.action is KeybindAction
-            ? (actionHandler.action as KeybindAction).shortcutKey
-            : null,
+        keybind: actionHandler.action is KeybindAction ? (actionHandler.action as KeybindAction).shortcutKey : null,
         onPressed: enabled
             ? () {
                 actionHandler._execute(!selected);
@@ -298,15 +279,15 @@ abstract class ActionHandler<T> {
 
   static ToolbarItem newToolbarComboBox<T>(
     ActionHandler<T> actionHandler, {
-    required I18n label,
+    required Intl label,
     required List<ActionValue<T>> values,
     int selected = -1,
     bool enabled = true,
     Widget Function(BuildContext)? header,
     Widget Function(BuildContext)? footer,
     T? value,
-    I18n? tooltip,
-    I18n? tooltipDescription,
+    Intl? tooltip,
+    Intl? tooltipDescription,
     Widget? tooltipIcon,
   }) {
     if (value != null && selected == -1) {
@@ -322,12 +303,7 @@ abstract class ActionHandler<T> {
       tooltip: tooltip,
       tooltipDescription: tooltipDescription,
       tooltipIcon: tooltipIcon,
-      items: enabled
-          ? values
-              .map((e) =>
-                  ToolbarComboBoxItem(e.icon, e.label ?? I18n.empty, e.value))
-              .toList()
-          : [],
+      items: enabled ? values.map((e) => ToolbarComboBoxItem(e.icon, e.label ?? I18n.empty, e.value)).toList() : [],
       selected: selected,
       key: actionHandler.action.key,
     );
@@ -336,7 +312,7 @@ abstract class ActionHandler<T> {
 
   static Menu newMenu<T>(
     ActionHandler<T> actionHandler, {
-    required I18n label,
+    required Intl label,
     Widget? icon,
     List<ActionValue<T>>? values,
     bool enabled = true,
@@ -355,9 +331,7 @@ abstract class ActionHandler<T> {
           onTap: () {
             actionHandler._execute(!((value ?? false) as bool) as T?);
           },
-          keybind: actionHandler.action is KeybindAction
-              ? (actionHandler.action as KeybindAction).shortcutKey
-              : null);
+          keybind: actionHandler.action is KeybindAction ? (actionHandler.action as KeybindAction).shortcutKey : null);
     }
     List<Menu> items = [];
     if (values != null) {
@@ -378,9 +352,7 @@ abstract class ActionHandler<T> {
         icon: icon,
         items: items,
         label: label,
-        keybind: actionHandler.action is KeybindAction
-            ? (actionHandler.action as KeybindAction).shortcutKey
-            : null,
+        keybind: actionHandler.action is KeybindAction ? (actionHandler.action as KeybindAction).shortcutKey : null,
         onTap: enabled
             ? () {
                 actionHandler._execute(null);
@@ -394,14 +366,14 @@ abstract class ActionHandler<T> {
 
   void execute(T? value) {}
 
-  Menu? createMenu() {}
+  Menu? buildMenu() {}
 
-  ToolbarItem? createToolbar() {}
+  ToolbarItem? buildToolbar() {}
 }
 
 class ActionValue<T> {
   final Widget? icon;
-  final I18n? label;
+  final Intl? label;
   final T? value;
   const ActionValue({this.label, this.value, this.icon});
 }

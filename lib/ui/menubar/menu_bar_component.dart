@@ -11,8 +11,7 @@ class MenuBarComponent extends StatefulWidget {
   static double menuBarHeight = 24;
   final List<Menu> menuBar;
   final Widget? title;
-  const MenuBarComponent({Key? key, required this.menuBar, this.title})
-      : super(key: key);
+  const MenuBarComponent({Key? key, required this.menuBar, this.title}) : super(key: key);
 
   @override
   _MenuBarComponentState createState() => _MenuBarComponentState();
@@ -27,8 +26,7 @@ class _MenuBarComponentState extends State<MenuBarComponent> {
   @override
   void initState() {
     super.initState();
-    _mnemonicGroup.properties
-        .addAll(widget.menuBar.map((e) => MnemonicProperty(e, -1)));
+    _mnemonicGroup.properties.addAll(widget.menuBar.map((e) => MnemonicProperty(e, -1)));
     _mnemonicGroup.recalculateMnemonic();
   }
 
@@ -36,8 +34,7 @@ class _MenuBarComponentState extends State<MenuBarComponent> {
   void didUpdateWidget(covariant MenuBarComponent oldWidget) {
     super.didUpdateWidget(oldWidget);
     _mnemonicGroup.properties.clear();
-    _mnemonicGroup.properties
-        .addAll(widget.menuBar.map((e) => MnemonicProperty(e, -1)));
+    _mnemonicGroup.properties.addAll(widget.menuBar.map((e) => MnemonicProperty(e, -1)));
     _mnemonicGroup.recalculateMnemonic();
   }
 

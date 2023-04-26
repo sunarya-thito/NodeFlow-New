@@ -6,21 +6,19 @@ import 'package:nodeflow/ui/tooltip/tooltip_viewport.dart';
 
 class TooltipWrapper extends StatefulWidget {
   // predefined tooltip styles
-  static Widget Function(BuildContext) defaultTooltip(I18n label) {
+  static Widget Function(BuildContext) defaultTooltip(Intl label) {
     return (context) {
       return Container(
         padding: const EdgeInsets.all(8),
         child: DefaultTextStyle(
-          style: TextStyle(
-              color: CompactData.of(context).primaryTextColor, fontSize: 12),
+          style: TextStyle(color: CompactData.of(context).primaryTextColor, fontSize: 12),
           child: label.asTextWidget(),
         ),
       );
     };
   }
 
-  static Widget Function(BuildContext) descriptiveTooltip(
-      I18n label, I18n description) {
+  static Widget Function(BuildContext) descriptiveTooltip(Intl label, Intl description) {
     return (context) {
       return Container(
           padding: const EdgeInsets.all(8),
@@ -29,16 +27,12 @@ class TooltipWrapper extends StatefulWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               DefaultTextStyle(
-                style: TextStyle(
-                    color: CompactData.of(context).primaryTextColor,
-                    fontSize: 12),
+                style: TextStyle(color: CompactData.of(context).primaryTextColor, fontSize: 12),
                 child: label.asTextWidget(),
               ),
               const SizedBox(height: 4),
               DefaultTextStyle(
-                style: TextStyle(
-                    color: CompactData.of(context).secondaryTextColor,
-                    fontSize: 12),
+                style: TextStyle(color: CompactData.of(context).secondaryTextColor, fontSize: 12),
                 child: description.asTextWidget(),
               ),
             ],
@@ -46,8 +40,7 @@ class TooltipWrapper extends StatefulWidget {
     };
   }
 
-  static Widget Function(BuildContext) actionTooltip(
-      I18n label, I18n? description, Widget? icon, ShortcutKey? keybind) {
+  static Widget Function(BuildContext) actionTooltip(Intl label, Intl? description, Widget? icon, ShortcutKey? keybind) {
     return (context) {
       return Container(
           padding: const EdgeInsets.all(8),
@@ -55,9 +48,7 @@ class TooltipWrapper extends StatefulWidget {
             children: [
               if (icon != null)
                 IconTheme(
-                  data: IconThemeData(
-                      size: 18,
-                      color: CompactData.of(context).primaryTextColor),
+                  data: IconThemeData(size: 18, color: CompactData.of(context).primaryTextColor),
                   child: icon,
                 ),
               if (icon != null) const SizedBox(width: 8),
@@ -70,28 +61,20 @@ class TooltipWrapper extends StatefulWidget {
                     children: [
                       Expanded(
                         child: DefaultTextStyle(
-                          style: TextStyle(
-                              color: CompactData.of(context).primaryTextColor,
-                              fontSize: 12),
+                          style: TextStyle(color: CompactData.of(context).primaryTextColor, fontSize: 12),
                           child: label.asTextWidget(),
                         ),
                       ),
                       if (keybind != null) const SizedBox(width: 32),
                       if (keybind != null)
                         Text(keybind.toString(),
-                            style: TextStyle(
-                                decoration: TextDecoration.none,
-                                color:
-                                    CompactData.of(context).secondaryTextColor,
-                                fontSize: 12)),
+                            style: TextStyle(decoration: TextDecoration.none, color: CompactData.of(context).secondaryTextColor, fontSize: 12)),
                     ],
                   ),
                   if (description != null) const SizedBox(height: 4),
                   if (description != null)
                     DefaultTextStyle(
-                      style: TextStyle(
-                          color: CompactData.of(context).secondaryTextColor,
-                          fontSize: 12),
+                      style: TextStyle(color: CompactData.of(context).secondaryTextColor, fontSize: 12),
                       child: description.asTextWidget(),
                     ),
                 ],
@@ -103,8 +86,7 @@ class TooltipWrapper extends StatefulWidget {
 
   final Widget Function(BuildContext context) tooltip;
   final Widget child;
-  const TooltipWrapper({Key? key, required this.child, required this.tooltip})
-      : super(key: key);
+  const TooltipWrapper({Key? key, required this.child, required this.tooltip}) : super(key: key);
 
   @override
   _TooltipWrapperState createState() => _TooltipWrapperState();
@@ -134,9 +116,7 @@ class _TooltipWrapperState extends State<TooltipWrapper> {
           Future.delayed(const Duration(milliseconds: _tooltipDelay), () {
             if (mounted && _hovered) {
               _shown = true;
-              TooltipData.of(context)
-                  .controller
-                  .preserveTooltip(widget.tooltip);
+              TooltipData.of(context).controller.preserveTooltip(widget.tooltip);
             }
           });
         },

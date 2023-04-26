@@ -12,8 +12,7 @@ class ToolbarController extends ChangeNotifier {
 
   void open(ToolbarComboBox comboBox, Offset globalOffset) {
     closeOverlay();
-    _opened =
-        ToolbarComboBoxPopup(comboBox: comboBox, globalPosition: globalOffset);
+    _opened = ToolbarComboBoxPopup(comboBox: comboBox, globalPosition: globalOffset);
     notifyListeners();
   }
 
@@ -46,14 +45,7 @@ abstract class ToolbarItem {
 class ToolbarToggleButton extends ToolbarButton {
   final bool selected;
   ToolbarToggleButton(
-      {this.selected = false,
-      required super.icon,
-      required super.label,
-      super.description,
-      super.keybind,
-      super.onPressed,
-      super.key,
-      super.hidden});
+      {this.selected = false, required super.icon, required super.label, super.description, super.keybind, super.onPressed, super.key, super.hidden});
 
   @override
   Widget build(BuildContext context) {
@@ -87,19 +79,12 @@ class ToolbarToggleButton extends ToolbarButton {
 
 class ToolbarButton extends ToolbarItem {
   final Widget icon;
-  final I18n label;
-  final I18n? description;
+  final Intl label;
+  final Intl? description;
   final ShortcutKey? keybind;
   final void Function()? onPressed;
 
-  ToolbarButton(
-      {required this.icon,
-      required this.label,
-      this.onPressed,
-      super.key,
-      this.description,
-      this.keybind,
-      super.hidden});
+  ToolbarButton({required this.icon, required this.label, this.onPressed, super.key, this.description, this.keybind, super.hidden});
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +116,7 @@ class ToolbarButton extends ToolbarItem {
 
 class ToolbarComboBoxItem {
   final Widget? icon;
-  final I18n label;
+  final Intl label;
   final dynamic value;
 
   ToolbarComboBoxItem(this.icon, this.label, this.value);
@@ -142,10 +127,10 @@ class ToolbarComboBox<T> extends ToolbarItem {
   final Widget Function(BuildContext context)? footer;
   final List<ToolbarComboBoxItem> items;
   final int selected;
-  final I18n placeholder;
+  final Intl placeholder;
   final void Function(int selected) onChangeSelected;
-  final I18n? tooltip;
-  final I18n? tooltipDescription;
+  final Intl? tooltip;
+  final Intl? tooltipDescription;
   final Widget? tooltipIcon;
 
   ToolbarComboBox(

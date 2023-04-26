@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nodeflow/assets/asset_manager.dart';
 import 'package:nodeflow/ui/menubar/menu_bar.dart';
 
-Map<String, I18n> _messages = {};
+Map<String, Intl> _messages = {};
 
 Future<void> reloadMessages(String assetName) async {
   _messages.clear();
@@ -18,11 +18,11 @@ Future<void> reloadMessages(String assetName) async {
   map = flatten(map);
   // convert the map to a list of I18n objects
   map.forEach((key, value) {
-    I18n? old = _messages[key];
+    Intl? old = _messages[key];
     if (old != null) {
       old.message = value;
     } else {
-      _messages[key] = I18n(value);
+      _messages[key] = Intl(value);
     }
     if (kDebugMode) {
       print('Loaded message: $key = $value');
@@ -48,9 +48,9 @@ Map flatten(Map map) {
   return result;
 }
 
-class I18n extends ChangeNotifier {
-  static I18n get(String key) {
-    I18n? result = _messages[key];
+class Intl extends ChangeNotifier {
+  static Intl get(String key) {
+    Intl? result = _messages[key];
     if (result == null) {
       if (kDebugMode) {
         print('Message not found: $key');
@@ -64,44 +64,9 @@ class I18n extends ChangeNotifier {
     return result;
   }
 
-  static final I18n empty = I18n('');
-  static I18n get dashboard_project => get('dashboard.project');
-  static I18n get dashboard_project_overview =>
-      get('dashboard.project.overview');
-  static I18n get dashboard_project_projects =>
-      get('dashboard.project.projects');
-  static I18n get dashboard_account => get('dashboard.account');
-  static I18n get dashboard_account_billing => get('dashboard.account.billing');
-  static I18n get dashboard_account_settings =>
-      get('dashboard.account.settings');
-  static I18n get dashboard_account_logout => get('dashboard.account.logout');
-  static I18n get dashboard_search => get('dashboard.search');
-  static I18n get menubar_file => get('menubar.file');
-  static I18n get menubar_edit => get('menubar.edit');
-  static I18n get menubar_view => get('menubar.view');
-  static I18n get menubar_tools => get('menubar.tools');
-  static I18n get menubar_help => get('menubar.help');
-  static I18n get quickaccess_search => get('quickaccess.search');
-  static I18n get tooltip_quickaccess_search =>
-      get('tooltip.quickaccess.search');
-  static I18n get quickaccess_run => get('quickaccess.run');
-  static I18n get tooltip_quickaccess_run => get('tooltip.quickaccess.run');
-  static I18n get quickaccess_deploy => get('quickaccess.deploy');
-  static I18n get tooltip_quickaccess_deploy =>
-      get('tooltip.quickaccess.deploy');
-  static I18n get quickaccess_build_configuration =>
-      get('quickaccess.build_configuration');
-  static I18n get tooltip_quickaccess_build_configuration =>
-      get('tooltip.quickaccess.build_configuration');
-  static I18n get project_default_name => get('project.default.name');
-  static I18n get sidebar_projectfiles => get('sidebar.projectfiles');
-  static I18n get bottombar_console => get('bottombar.console');
-  static I18n get bottombar_todo => get('bottombar.todo');
-  static I18n get bottombar_problems => get('bottombar.problems');
-
   String _message;
 
-  I18n(this._message);
+  Intl(this._message);
 
   String get message => _message;
   set message(String message) {
@@ -113,8 +78,7 @@ class I18n extends ChangeNotifier {
     return I18nTextWidget(i18n: this);
   }
 
-  Widget asBuilderWidget(
-      Widget Function(BuildContext context, I18n i18n) builder) {
+  Widget asBuilderWidget(Widget Function(BuildContext context, Intl i18n) builder) {
     return I18nBuilderWidget(i18n: this, builder: builder);
   }
 
@@ -182,11 +146,10 @@ class MnemonicProperty {
 }
 
 class I18nMnemonicWidget extends StatefulWidget {
-  final I18n i18n;
+  final Intl i18n;
   final int index;
 
-  const I18nMnemonicWidget({Key? key, required this.i18n, required this.index})
-      : super(key: key);
+  const I18nMnemonicWidget({Key? key, required this.i18n, required this.index}) : super(key: key);
 
   @override
   I18nMnemonicWidgetState createState() => I18nMnemonicWidgetState();
@@ -195,39 +158,38 @@ class I18nMnemonicWidget extends StatefulWidget {
 class I18nMnemonicWidgetState extends State<I18nMnemonicWidget> {
   @override
   Widget build(BuildContext context) {
-    var index = widget.index;
-    var msg = widget.i18n.message;
-    if (index == -1) return Text(msg);
-    List<TextSpan> children = [];
-    if (index == 0) {
-      // underlined mnemonic
-      children.add(TextSpan(
-          text: msg[0],
-          style: const TextStyle(decoration: TextDecoration.underline)));
-      // rest of the text
-      children.add(TextSpan(text: msg.substring(1)));
-    } else {
-// first part of the text
-      children.add(TextSpan(text: msg.substring(0, index)));
-      // underlined mnemonic
-      children.add(TextSpan(
-          text: msg[index],
-          style: const TextStyle(decoration: TextDecoration.underline)));
-      // rest of the text
-      children.add(TextSpan(text: msg.substring(index + 1)));
-    }
-    // return RichText(text: TextSpan(children: children));
-    // use Text.rich instead of RichText to inherit the style
-    return Text.rich(TextSpan(children: children));
+    return Text(
+      widget.i18n.message,
+      style: TextStyle(decoration: TextDecoration.underline),
+    );
+    // var index = widget.index;
+    // var msg = widget.i18n.message;
+    // if (index == -1) return Text(msg);
+    // List<TextSpan> children = [];
+    // if (index == 0) {
+    //   // underlined mnemonic
+    //   children.add(TextSpan(text: msg[0], style: const TextStyle(decoration: TextDecoration.underline)));
+    //   // rest of the text
+    //   children.add(TextSpan(text: msg.substring(1)));
+    // } else {
+    //   // first part of the text
+    //   children.add(TextSpan(text: msg.substring(0, index)));
+    //   // underlined mnemonic
+    //   children.add(TextSpan(text: msg[index], style: const TextStyle(decoration: TextDecoration.underline)));
+    //   // rest of the text
+    //   children.add(TextSpan(text: msg.substring(index + 1)));
+    // }
+    // // return RichText(text: TextSpan(children: children));
+    // // use Text.rich instead of RichText to inherit the style
+    // return Text.rich(TextSpan(children: children));
   }
 }
 
 class I18nBuilderWidget extends StatelessWidget {
-  final I18n i18n;
-  final Widget Function(BuildContext context, I18n i18n) builder;
+  final Intl i18n;
+  final Widget Function(BuildContext context, Intl i18n) builder;
 
-  const I18nBuilderWidget({Key? key, required this.builder, required this.i18n})
-      : super(key: key);
+  const I18nBuilderWidget({Key? key, required this.builder, required this.i18n}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +198,7 @@ class I18nBuilderWidget extends StatelessWidget {
 }
 
 class I18nTextWidget extends StatefulWidget {
-  final I18n i18n;
+  final Intl i18n;
 
   const I18nTextWidget({super.key, required this.i18n});
 

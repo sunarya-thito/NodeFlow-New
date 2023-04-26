@@ -45,8 +45,7 @@ class LogRecord {
 
   static LogRecord fromJson(Map<String, dynamic> json) {
     return LogRecord(
-      LogLevel.values
-          .firstWhere((element) => element.toString() == json['level']),
+      LogLevel.values.firstWhere((element) => element.toString() == json['level']),
       json['message'],
       DateTime.parse(json['time']),
     );
@@ -73,19 +72,15 @@ abstract class BuildConfiguration extends ChangeNotifier {
 // - Flutter projects
 // - more to come
 abstract class ProjectHandler {
-  I18n get name;
-  I18n get description;
+  Intl get name;
+  Intl get description;
   void initHandler(Application state, Project project);
 
-  Future<ConsoleInstance> deployProject(
-      Project project, BuildConfiguration configuration);
-  Future<ConsoleInstance> runProject(
-      Project project, BuildConfiguration configuration);
+  Future<ConsoleInstance> deployProject(Project project, BuildConfiguration configuration);
+  Future<ConsoleInstance> runProject(Project project, BuildConfiguration configuration);
 
-  Future<BuildConfiguration> deserializeBuildConfiguration(
-      Map<String, dynamic> json);
-  Future<Map<String, dynamic>> serializeBuildConfiguration(
-      BuildConfiguration configuration);
+  Future<BuildConfiguration> deserializeBuildConfiguration(Map<String, dynamic> json);
+  Future<Map<String, dynamic>> serializeBuildConfiguration(BuildConfiguration configuration);
 
   Future<ProjectAuthor> deserializeAuthor(Map<String, dynamic> json);
   Future<Map<String, dynamic>> serializeAuthor(ProjectAuthor author);
@@ -100,7 +95,7 @@ abstract class ProjectAuthor {
 }
 
 abstract class ProjectAction {
-  I18n get name;
+  Intl get name;
   ProjectAuthor get author;
   Future<void> undo(Project project);
   Future<void> redo(Project project);

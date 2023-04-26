@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nodeflow/ui/compact_data.dart';
+import 'package:nodeflow/ui/custom_control.dart';
 import 'package:nodeflow/ui/toolbar/toolbar.dart';
 import 'package:nodeflow/ui/tooltip/tooltip_wrapper.dart';
 
@@ -12,40 +13,28 @@ class ToolbarButtonWidget extends StatefulWidget {
 }
 
 class _ToolbarButtonWidgetState extends State<ToolbarButtonWidget> {
-  bool _hovered = false;
-  bool _down = false;
-
   // final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
     return TooltipWrapper(
-      tooltip: TooltipWrapper.actionTooltip(widget.button.label,
-          widget.button.description, widget.button.icon, widget.button.keybind),
-      child: GestureDetector(
-        onTap: () {
-          if (widget.button.onPressed != null) {
-            widget.button.onPressed!();
-          }
-        },
-        child: Listener(
-          onPointerDown: (_) => setState(() => _down = true),
-          onPointerUp: (_) => setState(() => _down = false),
-          child: Container(
+      tooltip: TooltipWrapper.actionTooltip(widget.button.label, widget.button.description, widget.button.icon, widget.button.keybind),
+      child: CustomControl(
+        onTap: widget.button.onPressed,
+        builder: (context, state) {
+          return Container(
             padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-              color: _down
+              color: state == ControlState.down
                   ? app().buttonDown
-                  : _hovered
+                  : state == ControlState.hovered
                       ? app().buttonHovered
                       : null,
               borderRadius: BorderRadius.circular(2),
             ),
-            child: IconTheme(
-                data: IconThemeData(size: 16, color: app().primaryTextColor),
-                child: widget.button.icon),
-          ),
-        ),
+            child: IconTheme(data: IconThemeData(size: 16, color: app().primaryTextColor), child: widget.button.icon),
+          );
+        },
       ),
     );
   }

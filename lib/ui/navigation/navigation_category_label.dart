@@ -3,7 +3,7 @@ import 'package:nodeflow/i18n/internationalization.dart';
 import 'package:nodeflow/ui/compact_data.dart';
 
 class NavigationCategoryLabel extends StatelessWidget {
-  final I18n label;
+  final Intl label;
   const NavigationCategoryLabel({Key? key, required this.label}) : super(key: key);
 
   @override

@@ -70,17 +70,12 @@ class _MenuBarItemComponentState extends State<MenuBarItemComponent> {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: DefaultTextStyle(
             style: TextStyle(
-              color: widget.menu.isDisabled
-                  ? app().secondaryTextColor
-                  : app().primaryTextColor,
-              decorationColor: widget.menu.isDisabled
-                  ? app().secondaryTextColor
-                  : app().primaryTextColor,
+              color: widget.menu.isDisabled ? app().secondaryTextColor : app().primaryTextColor,
+              decorationColor: widget.menu.isDisabled ? app().secondaryTextColor : app().primaryTextColor,
               decorationThickness: 1,
               fontSize: 12,
             ),
-            child: widget.menu.label.asMnemonicWidget(
-                widget.mnemonicGroup.getMnemonicIndex(widget.menu)),
+            child: widget.menu.label.asMnemonicWidget(widget.mnemonicGroup.getMnemonicIndex(widget.menu)),
           ),
         ),
       ),

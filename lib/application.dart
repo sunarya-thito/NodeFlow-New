@@ -8,6 +8,7 @@ import 'package:nodeflow/actions/action_deploy.dart';
 import 'package:nodeflow/actions/action_edit.dart';
 import 'package:nodeflow/actions/action_file.dart';
 import 'package:nodeflow/actions/action_help.dart';
+import 'package:nodeflow/actions/action_new.dart';
 import 'package:nodeflow/actions/action_run.dart';
 import 'package:nodeflow/actions/action_tools.dart';
 import 'package:nodeflow/actions/action_view.dart';
@@ -39,13 +40,13 @@ Future<void> initializeApplication([Project? project]) async {
   // WARN: ORDER MATTERS!!!
   var actionContext = nodeflow.getContext<action.ActionContext>();
   actionContext.registerAction(ActionFile());
+  actionContext.registerAction(ActionNew(), parent: ActionFile.actionKey);
   actionContext.registerAction(ActionEdit());
   actionContext.registerAction(ActionTools());
   actionContext.registerAction(ActionView());
   actionContext.registerAction(ActionHelp());
 
-  actionContext.registerAction(ActionBuildConfiguration(),
-      parent: ActionTools.actionKey);
+  actionContext.registerAction(ActionBuildConfiguration(), parent: ActionTools.actionKey);
   actionContext.registerAction(ActionRun(), parent: ActionTools.actionKey);
   actionContext.registerAction(ActionDeploy(), parent: ActionTools.actionKey);
 
@@ -63,10 +64,7 @@ Future<void> initializeApplication([Project? project]) async {
   if (kIsWeb) {
     // execute after the first frame is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      window.document
-          .querySelector('#preloader')
-          ?.classes
-          .add('preloader-gone');
+      window.document.querySelector('#preloader')?.classes.add('preloader-gone');
     });
   }
 
